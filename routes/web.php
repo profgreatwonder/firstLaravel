@@ -29,7 +29,13 @@
 
 Route::view('/', 'home');
 
-Route::view('contact', 'contact');
+Route::get('contact', 'ContactFormController@create');
+
+Route::post('contact', 'ContactFormController@store');
+
+//the contact below is replaced by the one above
+// Route::view('contact', 'contact');
+
 
 Route::view('about', 'about');
 
@@ -49,14 +55,20 @@ Route::view('about', 'about');
 
 // It is more professional to put the code above in a controller file created in a controller folder found in the app.
 
-Route::get('customers', 'CustomersController@index');
+// Route::get('customers', 'CustomersController@index');
 
-Route::get('customers.create', 'CustomersController@create');
+// Route::get('customers/create', 'CustomersController@create');
 
-Route::post('customers', 'CustomersController@store');
+// Route::post('customers', 'CustomersController@store');
 
-Route::get('customers/{customer}','CustomersController@show');
+// Route::get('customers/{customer}','CustomersController@show');
 
-Route::get('customers/{customer}/edit','CustomersController@edit');
+// Route::get('customers/{customer}/edit','CustomersController@edit');
 
-Route::patch('customers/{customer}','CustomersController@update');
+// Route::patch('customers/{customer}','CustomersController@update');
+
+// Route::delete('customers/{customer}','CustomersController@destroy');
+
+//the commented lines of code can be re-written into the short code below
+
+Route::resource('customers', 'CustomersController');

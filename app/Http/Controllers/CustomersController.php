@@ -46,9 +46,9 @@ class CustomersController extends Controller
      public function create() {
 
         $companies = Company::all();
-
-    return view('customers.create',
-    compact('companies'));
+        $customer = new Customer();
+    return view('/customers.create',
+    compact('companies', 'customer'));
 
 
 
@@ -63,24 +63,16 @@ class CustomersController extends Controller
 
         // to validate an entry in a form below
 
-        $data = request()->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email',
-            'active' => 'required',
-            'company_id' => 'required'
-        ]);
-
-        // instead of having the repititon of what's above below, we can use a code to erase the repition. $customer = Customer::create($data); and after that, we can get rid of the code below
-
-        // $customer = new Customer();
+         //$data =  $customer = new Customer();
         // $customer->name = request('name');
         // $customer->email = request('email');
         // $customer->active = request('active');
         // $customer->save();
 
 
+        // instead of having the repititon of what's above below, we can use a code to erase the repition. $customer = Customer::create($data); and after that, we can get rid of the code below
 
-        Customer::create($data);
+        Customer::create($this->validateRequest());
 
         return redirect('customers');
 
@@ -90,7 +82,8 @@ class CustomersController extends Controller
 
      public function show(Customer $customer) {
 
-            // $customer = Customer::find($customer); to fix the error coming from entering 30 check below
+            // $customer = Customer::find($customer);
+            //  to fix the error coming from entering 30 check below
             // $customer = Customer::where('id', $customer)->firstOrFail();
 
             return view('customers.show', compact('customer'));
@@ -104,15 +97,25 @@ class CustomersController extends Controller
      }
 
      public function update(Customer $customer) {
-        $data = request()->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email',
-            // 'active' => 'required',
-            // 'company_id' => 'required'
-        ]);
 
-        $customer->update($data);
+        $customer->update($this->validateRequest());
 
         return redirect('customers/' . $customer->id);
+     }
+
+     public function destroy(Customer $customer) {
+        $customer->delete();
+
+        return redirect('customers');
+     }
+
+     private function validateRequest() {
+
+        return request()->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'active' => 'required',
+            'company_id' => 'required'
+        ]);
      }
 }

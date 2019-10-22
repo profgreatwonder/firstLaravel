@@ -1,4 +1,4 @@
-<ul class="nav py-3">
+<ul class="nav py-3 body">
         <li class="nav-item active">
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
