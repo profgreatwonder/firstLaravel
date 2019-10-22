@@ -1,0 +1,58 @@
+
+.value {
+    background-image: url(../images/quixpix.jpg);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color:#fff;
+    background-attachment: fixed;
+}
+
+.opacity{
+    background-color:rgba(0, 0, 0, 0.7);
+    padding:7%;
+}
+
+.list li {
+    list-style-type: none;
+    display: inline;
+    margin-right: 100px;
+}
+
+.quizpage {
+    background-image: url(../images/mathew-schwartz-sb7RUrRMaC4-unsplash.jpg);
+    background-size: cover;
+}
+
+
+.dashb {
+    background-image: url(../images/nasa-Q1p7bh3SHj8-unsplash.jpg);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color:#fff;
+    background-attachment: fixed;
+}
+
+.opacity1 {
+    background-color:rgba(0, 0, 0, 0.233);
+    padding:7%;
+}
+
+.index {
+    padding-right: 0px !important;
+}
+
+.profilep {
+    background-image: url(../images/nasa-Q1p7bh3SHj8-unsplash.jpg);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color:#fff;
+    background-attachment: fixed;
+}
+
+.opacity2 {
+    background-color:rgba(0, 0, 0, 0.5);
+    padding:7%;
+}
