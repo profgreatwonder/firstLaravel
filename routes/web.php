@@ -29,15 +29,15 @@
 
 Route::view('/', 'home');
 
-Route::get('contact', 'ContactFormController@create');
+Route::get('contact', 'ContactFormController@create')->name('contact.create');
 
-Route::post('contact', 'ContactFormController@store');
+Route::post('contact', 'ContactFormController@store')->name('contact.store');
 
 //the contact below is replaced by the one above
 // Route::view('contact', 'contact');
 
 
-Route::view('about', 'about');
+Route::view('about', 'about')->middleware('test');
 
 // The above format is not a good option when you have to pass data into your route.
 
@@ -72,3 +72,11 @@ Route::view('about', 'about');
 //the commented lines of code can be re-written into the short code below
 
 Route::resource('customers', 'CustomersController');
+
+// the code below is a way to authorize what page a user sees. The second method is to do it the CustomerController.
+// Route::resource('customers', 'CustomersController')->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+// ->name('home');

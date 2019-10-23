@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Customer;
-
-
-
 use Illuminate\Http\Request;
 
 class CustomersController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        // $this->middleware('auth')->except(['index']);  ->This method is for preventing certain actions like editing and adding customers to the list, even though it gives access to the customer list page.
+    }
     //  public function list(). This is replaced with the function below
      public function index() {
         // $customers = [

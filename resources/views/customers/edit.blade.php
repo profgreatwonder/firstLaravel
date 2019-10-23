@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('title', 'Edit Details for '. $customer->name)
 
@@ -20,7 +20,10 @@
 
     <div class="row">
         <div class="col-12">
-            <form action="/customers/{{$customer->id}}" method="POST">
+            <form action="/customers/{{ route('customer.update', ['customer' => $customer]) }}" method="POST">
+
+                {{-- {{$customer->id}} above requires a parameter and can be rewrritten as (check above in form action). it helps you pass as many parameters as you need ->
+                <form action="/customers/{{ route('customer.update', ['customer' => $customer, 'another' => 124]) }}" method="POST"> --}}
 
                 @method('PATCH')
 
@@ -65,7 +68,7 @@
                         @endforeach
                 </ul>
             </div>
-    </div> 
+    </div>
 
     <div class="row">
         {{-- <div class="col-12">

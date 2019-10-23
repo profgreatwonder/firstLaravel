@@ -1,18 +1,72 @@
-<ul class="nav py-3 body">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/contact">Contact Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/customers">Customer Lists</a>
-        </li>
-        {{--  <span><p> {{ $username }} </p></span>
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        The code above outputs the username passed in the layout file in the commented out navbar sec   tion--}}
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                                  </li>
+                                  {{-- <li class="nav-item active">
+                                        <a class="nav-link" href="{{action('HomeController@index') }}">Dashboard <span class="sr-only">(current)</span></a>
+                                      </li> --}}
+                                      {{-- the code above can be rewritten as the code below if you want to have access to the page of the controller depending on the kind of IDE you're using --}}
 
-      </ul>
+                                      {{-- <a class="nav-link" href="{{action([\App\Http\Controllers\HomeController::class, 'index']) }}">Dashboard <span class="sr-only">(current)</span></a>
+                                      </li> --}}
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="/about">About Us</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="/contact">Contact Us</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" href="/customers">Customer Lists</a>
+                                  </li>
+                                  {{--  <span><p> {{ $username }} </p></span>
+
+                                  The code above outputs the username passed in the layout file in the commented out navbar section--}}
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+

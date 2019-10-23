@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 {{-- @section('title')
 
@@ -16,7 +16,10 @@
 {{-- <p>Company Name</p>
 <p>123-123-123</p> --}}
 
-<form action="/contact" method="POST">
+@if (! session()->has('message'))
+
+{{-- instead of the url helper "<form action="{{ url('/contact') }}" method="POST">", we use the route in its place. This helps in a situation where you eventually change ur route name, the change gets to show up in the view--}}
+<form action="{{ route('contact.store') }}" method="POST">
     <div class="form-group">
         <label for="name">Name</label>
         <div class="form-group pb-5">
@@ -42,5 +45,7 @@
 
             <button type="submit" class="btn btn-primary">Send Message</button>
 </form>
+
+@endif
 
 @endsection

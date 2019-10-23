@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('title', 'Customer List')
 {{-- Customer Lists --}}
@@ -28,12 +28,14 @@
     <div class="col-4">
         {{ $customer->company->name}}
     </div>
-<div class="col-2">
-    {{ $customer->active }}
+    <div class="col-2">
+        {{ $customer->active }}
+    </div>
+
 </div>
 
 @endforeach
-<div>
+
 @endsection
     {{-- <div class="col-6">
         <h3>Active Customers</h3>
