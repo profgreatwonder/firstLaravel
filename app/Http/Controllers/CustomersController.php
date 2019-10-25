@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Customer;
+use App\Events\NewCustomerHasRegisteredEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeNewUserMail;
 
 class CustomersController extends Controller
 {
@@ -76,9 +79,12 @@ class CustomersController extends Controller
 
         // instead of having the repititon of what's above below, we can use a code to erase the repition. $customer = Customer::create($data); and after that, we can get rid of the code below
 
-        Customer::create($this->validateRequest());
+       $customer = Customer::create($this->validateRequest());
 
-        return redirect('customers');
+       event(new NewCustomerHasRegisteredEvent($customer));
+
+
+        return redirect('customers'); 
 
         //  dd(request('name'));
 
@@ -123,3 +129,8 @@ class CustomersController extends Controller
         ]);
      }
 }
+
+
+// Threw an error from this page while working on mail ->>>"Class 'App\Http\Controllers\NewCustomerHasRegisteredEvent' not found"
+// Solution->> This means that we forgot to import a class at the top. In this case ->>>> use App\Events\NewCustomerHasRegisteredEvent;
+// N/B: Whenever you see such notifications where a class is missing, it means you forgot to import a class.
