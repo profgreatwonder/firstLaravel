@@ -20,7 +20,7 @@
 
     <div class="row">
         <div class="col-12">
-            <form action="/customers/{{ route('customer.update', ['customer' => $customer]) }}" method="POST">
+            <form action="{{ route('customers.update', ['customer' => $customer]) }}" method="POST" enctype="multipart/form-data">
 
                 {{-- {{$customer->id}} above requires a parameter and can be rewrritten as (check above in form action). it helps you pass as many parameters as you need ->
                 <form action="/customers/{{ route('customer.update', ['customer' => $customer, 'another' => 124]) }}" method="POST"> --}}

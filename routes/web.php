@@ -68,7 +68,7 @@ Route::view('about', 'about')->middleware('test');
 // Route::patch('customers/{customer}','CustomersController@update');
 
 // Route::delete('customers/{customer}','CustomersController@destroy');
- 
+
 //the commented lines of code can be re-written into the short code below
 
 Route::resource('customers', 'CustomersController');

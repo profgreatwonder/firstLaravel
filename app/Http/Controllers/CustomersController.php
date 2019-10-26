@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Customer;
 use App\Events\NewCustomerHasRegisteredEvent;
+use App\Mail\WelcomeNewUserMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeNewUserMail;
+use intervention\Image\Facades\Image;
+
 
 class CustomersController extends Controller
 {
@@ -81,10 +83,12 @@ class CustomersController extends Controller
 
        $customer = Customer::create($this->validateRequest());
 
+       $this->storeImage($customer);
+
        event(new NewCustomerHasRegisteredEvent($customer));
 
 
-        return redirect('customers'); 
+        return redirect('customers');
 
         //  dd(request('name'));
 
@@ -121,14 +125,41 @@ class CustomersController extends Controller
 
      private function validateRequest() {
 
-        return request()->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email',
-            'active' => 'required',
-            'company_id' => 'required'
-        ]);
+        // we can turn all the validation into a tap which allows us run a closure.
+
+            return tap(request()->validate([
+
+                'name' => 'required|min:3',
+                'email' => 'required|email',
+                'active' => 'required',
+                'company_id' => 'required',
+
+                // 'image' => 'required|image',this is for requiring images. we will replace return request() with $validatedData
+
+            ]), function() {
+
+                if (request()->hasFile('image')) {
+                    // dd(request()->image);
+                    request()->validate([
+                        'image' => 'file|image|5000',
+
+                    ]);
+                }
+            });
+
+        }
+
+        private function storeImage($customer) {
+            $customer->update([
+                'image' => request()->image->store('uploads', 'public'),
+            ]);
+
+            $image = Image::make(public_path('storage/' . $customer->image))->fit(300, 300, null, 'top-left');
+            $image->save();
+        }
+
      }
-}
+
 
 
 // Threw an error from this page while working on mail ->>>"Class 'App\Http\Controllers\NewCustomerHasRegisteredEvent' not found"
