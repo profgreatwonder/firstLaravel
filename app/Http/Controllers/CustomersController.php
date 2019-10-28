@@ -6,9 +6,11 @@ use App\Company;
 use App\Customer;
 use App\Events\NewCustomerHasRegisteredEvent;
 use App\Mail\WelcomeNewUserMail;
+// use App\Http\Controllers\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use intervention\Image\Facades\Image;
+// use intervention\Image\Facades\Image;
+
 
 
 class CustomersController extends Controller
@@ -30,7 +32,7 @@ class CustomersController extends Controller
         //             ];
         // the code above will be replaced with the one below, as we are now fetching from DB.
 
-            $customers = Customer::all();
+            $customers = Customer::with('company')->paginate(15);
 
         // where('active', 1)->get();
 
@@ -49,15 +51,16 @@ class CustomersController extends Controller
 
                     // the code above can be re-written with the shorthand below
 
+
                     return view('customers.index', compact('customers'));
      }
 
-     public function create() {
+        public function create() {
 
         $companies = Company::all();
         $customer = new Customer();
-    return view('/customers.create',
-    compact('companies', 'customer'));
+        return view('/customers.create',
+        compact('companies', 'customer'));
 
 
 
@@ -69,6 +72,8 @@ class CustomersController extends Controller
      }
 
      public function store() {
+
+        $this->authorize('create', Customer::class);
 
         // to validate an entry in a form below
 
@@ -83,7 +88,7 @@ class CustomersController extends Controller
 
        $customer = Customer::create($this->validateRequest());
 
-       $this->storeImage($customer);
+    //    $this->storeImage($customer);
 
        event(new NewCustomerHasRegisteredEvent($customer));
 
@@ -110,6 +115,7 @@ class CustomersController extends Controller
         return view('customers.edit', compact('customer', 'companies'));
      }
 
+
      public function update(Customer $customer) {
 
         $customer->update($this->validateRequest());
@@ -117,7 +123,11 @@ class CustomersController extends Controller
         return redirect('customers/' . $customer->id);
      }
 
+
      public function destroy(Customer $customer) {
+
+        $this->authorize('delete', $customer);
+        
         $customer->delete();
 
         return redirect('customers');
@@ -141,27 +151,34 @@ class CustomersController extends Controller
                 if (request()->hasFile('image')) {
                     // dd(request()->image);
                     request()->validate([
-                        'image' => 'file|image|5000',
-
+                        'image' => 'file|image|max:5000',
                     ]);
                 }
             });
 
         }
 
-        private function storeImage($customer) {
-            $customer->update([
-                'image' => request()->image->store('uploads', 'public'),
-            ]);
+        // private function storeImage($customer) {
 
-            $image = Image::make(public_path('storage/' . $customer->image))->fit(300, 300, null, 'top-left');
-            $image->save();
-        }
+        //     if(request()->has('image')) {
+        //         $customer->update([
+        //             'image' => request()->image->store('uploads', 'public'),
+        //         ]);
 
-     }
+
+        //         $image = Image::make(public_path('storage/' . $customer->image))->crop(300, 300);
+        //         $image->save();
+
+
+            // $image = Image::make(public_path('storage/' . $customer->image))->fit(300, 300, null, 'top-left');
+            // $image->save();
+        // }
+
+    // }
 
 
 
 // Threw an error from this page while working on mail ->>>"Class 'App\Http\Controllers\NewCustomerHasRegisteredEvent' not found"
 // Solution->> This means that we forgot to import a class at the top. In this case ->>>> use App\Events\NewCustomerHasRegisteredEvent;
 // N/B: Whenever you see such notifications where a class is missing, it means you forgot to import a class.
+}
